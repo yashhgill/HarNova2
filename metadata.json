@@ -1,0 +1,6 @@
+{
+  "name": "HarNova Builder",
+  "description": "Exquisite AI single-page landing page sandboxes instantly hosted with custom domain pointing API integrations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
