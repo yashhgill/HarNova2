@@ -19,9 +19,9 @@ export async function POST(req: NextRequest) {
     payment_method_types: ['card'],
     line_items: [{
       price_data: {
-        currency: 'usd',
+        currency: 'myr',
         product_data: { name: `HarNova — ${pack.tokens} tokens (${pack.label})` },
-        unit_amount: pack.price_usd * 100,
+        unit_amount: pack.price_myr * 100,
       },
       quantity: 1,
     }],

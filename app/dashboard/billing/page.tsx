@@ -6,9 +6,9 @@ import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
 
 const PACKS = [
-  { id: 'starter', tokens: 100, usd: 15, label: 'Starter', icon: '🌱', desc: '10 website builds' },
-  { id: 'builder', tokens: 200, usd: 30, label: 'Builder', icon: '🏗️', desc: '20 website builds', popular: true },
-  { id: 'pro',     tokens: 500, usd: 60, label: 'Pro',     icon: '🚀', desc: '50 website builds' },
+  { id: 'starter', tokens: 100, myr: 100, label: 'Starter', icon: '🌱', desc: '10 website builds' },
+  { id: 'builder', tokens: 200, myr: 200, label: 'Builder', icon: '🏗️', desc: '20 website builds', popular: true },
+  { id: 'pro',     tokens: 500, myr: 400, label: 'Pro',     icon: '🚀', desc: '50 website builds' },
 ]
 
 const COSTS = [
@@ -84,7 +84,7 @@ function BillingContent() {
             {pack.popular && <span className="absolute -top-3 right-4 bg-yellow-400 text-black border border-yellow-500 rounded-full px-2.5 py-0.5 text-xs font-bold">⭐ Popular</span>}
             <div className="text-3xl mb-2">{pack.icon}</div>
             <div className="font-bold text-lg mb-1">{pack.label}</div>
-            <div className="font-black text-4xl mb-1">${pack.usd}</div>
+            <div className="font-black text-4xl mb-1">RM{pack.myr}</div>
             <div className={`text-sm mb-4 ${pack.popular ? 'text-brand-200' : 'text-gray-500'}`}>{pack.tokens} tokens · {pack.desc}</div>
             <button onClick={() => buyPack(pack.id)} disabled={loadingPack === pack.id}
               className={`btn btn-md w-full ${pack.popular ? 'bg-white text-brand-700 border-white hover:bg-brand-50' : 'btn-primary'}`}>

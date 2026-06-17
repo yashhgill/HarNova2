@@ -20,9 +20,9 @@ const STEPS = [
 ]
 
 const PACKS = [
-  { tokens: 100, usd: 15, label: 'Starter', icon: '🌱', builds: 10 },
-  { tokens: 200, usd: 30, label: 'Builder', icon: '🏗️', builds: 20, popular: true },
-  { tokens: 500, usd: 60, label: 'Pro',     icon: '🚀', builds: 50 },
+  { tokens: 100, myr: 100, label: 'Starter', icon: '🌱', builds: 10 },
+  { tokens: 200, myr: 200, label: 'Builder', icon: '🏗️', builds: 20, popular: true },
+  { tokens: 500, myr: 400, label: 'Pro',     icon: '🚀', builds: 50 },
 ]
 
 const TESTIMONIALS = [
@@ -257,7 +257,7 @@ export default function Home() {
                 )}
                 <div className="text-3xl mb-3">{p.icon}</div>
                 <div className={`font-bold text-lg mb-1 ${p.popular ? 'text-white' : ''}`}>{p.label}</div>
-                <div className={`text-4xl font-black mb-1 ${p.popular ? 'text-white' : ''}`}>${p.usd}</div>
+                <div className={`text-4xl font-black mb-1 ${p.popular ? 'text-white' : ''}`}>RM{p.myr}<div>
                 <div className={`text-sm mb-5 ${p.popular ? 'text-brand-200' : 'text-gray-500'}`}>{p.tokens} tokens · {p.builds} website builds</div>
                 <ul className="space-y-2 mb-6">
                   {['Tokens never expire', 'All features included', 'Priority support'].map((item, j) => (
