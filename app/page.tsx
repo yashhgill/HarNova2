@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
-import { ArrowRight, Zap, Globe, Download, GitBranch, Check, Star, ChevronRight } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { ArrowRight, Check, Star } from 'lucide-react'
+import { useEffect } from 'react'
 
 const FEATURES = [
   { icon: '🤖', title: 'Claude AI builds it', desc: 'Powered by Anthropic\'s Claude — describe your business in plain language and get a full, professional website instantly.' },
@@ -9,7 +9,7 @@ const FEATURES = [
   { icon: '💾', title: 'Download your code', desc: 'Own your website forever. Download the full source code as a ZIP, no strings attached. Free.' },
   { icon: '🔗', title: 'Push to GitHub', desc: 'Connect your GitHub account and push your site directly to a repo. CI/CD ready from day one.' },
   { icon: '🌐', title: 'Custom domains', desc: 'Buy a .com or .my domain right from the dashboard. DNS configured automatically in minutes.' },
-  { icon: '📊', title: 'Token-based pricing', desc: 'Pay only for what you use. Tokens never expire. Top up anytime from $15.' },
+  { icon: '📊', title: 'Token-based pricing', desc: 'Pay only for what you use. Tokens never expire. Top up anytime from RM100.' },
 ]
 
 const STEPS = [
@@ -32,28 +32,42 @@ const TESTIMONIALS = [
 ]
 
 const COSTS = [
-  { action: 'Generate a website',        cost: 10, icon: '✨' },
-  { action: 'Regenerate / tweak',        cost: 5,  icon: '🔄' },
-  { action: 'Deploy (2-day trial)',       cost: 5,  icon: '🚀' },
-  { action: 'Permanent hosting /mo',     cost: 10, icon: '☁️' },
-  { action: 'Custom domain /year',       cost: 50, icon: '🌐' },
-  { action: 'GitHub push',               cost: 5,  icon: '🔗' },
-  { action: 'Download ZIP',              cost: 0,  icon: '💾' },
+  { action: 'Generate a website',    cost: 10, icon: '✨' },
+  { action: 'Regenerate / tweak',    cost: 5,  icon: '🔄' },
+  { action: 'Deploy (2-day trial)',  cost: 5,  icon: '🚀' },
+  { action: 'Permanent hosting /mo', cost: 10, icon: '☁️' },
+  { action: 'Custom domain /year',   cost: 50, icon: '🌐' },
+  { action: 'GitHub push',           cost: 5,  icon: '🔗' },
+  { action: 'Download ZIP',          cost: 0,  icon: '💾' },
 ]
 
-export default function Home() {
-  const revealRef = useRef<HTMLDivElement>(null)
+function Reveal({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+  return (
+    <div
+      data-reveal
+      className={className}
+      style={{ opacity: 0, transform: 'translateY(20px)', transition: `all 0.55s ease-out ${delay}s` }}
+    >
+      {children}
+    </div>
+  )
+}
 
+export default function Home() {
   useEffect(() => {
     const els = document.querySelectorAll('[data-reveal]')
     const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { (e.target as HTMLElement).style.opacity = '1'; (e.target as HTMLElement).style.transform = 'translateY(0)' } })
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const el = e.target as HTMLElement
+          el.style.opacity = '1'
+          el.style.transform = 'translateY(0)'
+        }
+      })
     }, { threshold: 0.1 })
     els.forEach(el => obs.observe(el))
     return () => obs.disconnect()
   }, [])
-
-  const rv = { style: { opacity: 0, transform: 'translateY(20px)', transition: 'all 0.55s ease-out' } as React.CSSProperties }
 
   return (
     <div className="min-h-screen bg-white">
@@ -80,7 +94,6 @@ export default function Home() {
 
       {/* HERO */}
       <section className="relative overflow-hidden pt-20 pb-28 px-5">
-        {/* BG gradients */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-500/5 rounded-full blur-3xl" />
           <div className="absolute top-20 right-0 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl" />
@@ -121,9 +134,7 @@ export default function Home() {
         {/* Hero mockup */}
         <div className="relative max-w-5xl mx-auto mt-16 animate-fade-up" style={{ animationDelay: '0.4s' }}>
           <div className="card-lg overflow-hidden">
-            {/* Builder UI mockup */}
             <div className="flex h-[420px]">
-              {/* Left panel */}
               <div className="w-72 border-r border-surface-200 bg-surface-50 p-4 flex flex-col gap-4 flex-shrink-0">
                 <div className="h-8 skeleton w-3/4" />
                 <div className="h-24 skeleton w-full" />
@@ -133,7 +144,6 @@ export default function Home() {
                 </div>
                 <div className="mt-auto h-10 bg-brand-600 rounded-xl" />
               </div>
-              {/* Right preview */}
               <div className="flex-1 bg-surface-50 p-4">
                 <div className="bg-white rounded-xl border border-surface-200 h-full overflow-hidden">
                   <div className="h-8 bg-gray-900 flex items-center gap-1.5 px-3">
@@ -151,19 +161,18 @@ export default function Home() {
                       <div className="h-9 w-24 skeleton rounded-lg" />
                     </div>
                     <div className="mt-6 grid grid-cols-3 gap-3">
-                      {[0,1,2].map(i => <div key={i} className="aspect-video skeleton rounded-lg" />)}
+                      {[0, 1, 2].map(i => <div key={i} className="aspect-video skeleton rounded-lg" />)}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          {/* Floating badges */}
           <div className="absolute -bottom-4 left-8 card px-4 py-2.5 shadow-card-lg flex items-center gap-2 text-sm font-medium">
             <span className="w-2 h-2 bg-emerald-500 rounded-full" /> Live in 30 seconds
           </div>
           <div className="absolute -bottom-4 right-8 card px-4 py-2.5 shadow-card-lg flex items-center gap-2 text-sm font-medium">
-            <Zap size={14} className="text-brand-600" /> 10 tokens used
+            ⚡ 10 tokens used
           </div>
         </div>
       </section>
@@ -171,8 +180,8 @@ export default function Home() {
       {/* MARQUEE */}
       <div className="bg-brand-600 py-3 overflow-hidden">
         <div className="flex gap-10 animate-[marquee_25s_linear_infinite] w-max">
-          {[...Array(2)].map((_, ri) =>
-            ['AI-Powered','Mobile-First','WhatsApp Integration','SEO Ready','Deploy in 60s','Download Code','GitHub Connect','Custom Domains','Malaysian SME Focus','Token-Based Pricing'].map((item, i) => (
+          {[0, 1].map(ri =>
+            ['AI-Powered', 'Mobile-First', 'WhatsApp Integration', 'SEO Ready', 'Deploy in 60s', 'Download Code', 'GitHub Connect', 'Custom Domains', 'Malaysian SME Focus', 'Token-Based Pricing'].map((item, i) => (
               <span key={`${ri}-${i}`} className="text-white/90 text-sm font-medium flex items-center gap-3 whitespace-nowrap">
                 <span className="w-1 h-1 rounded-full bg-white/50" /> {item}
               </span>
@@ -186,15 +195,15 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-sm font-semibold text-brand-600 tracking-widest uppercase mb-3">Features</p>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight" {...rv} data-reveal>Everything you need to go online</h2>
+            <Reveal><h2 className="text-4xl md:text-5xl font-black tracking-tight">Everything you need to go online</h2></Reveal>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
             {FEATURES.map((f, i) => (
-              <div key={i} className="card p-6 hover:shadow-card-md transition-shadow" {...rv} data-reveal>
+              <Reveal key={i} delay={i * 0.08} className="card p-6 hover:shadow-card-md transition-shadow">
                 <div className="text-3xl mb-4">{f.icon}</div>
                 <h3 className="font-bold text-lg mb-2">{f.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -205,11 +214,11 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-sm font-semibold text-brand-600 tracking-widest uppercase mb-3">How it works</p>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight" {...rv} data-reveal>Live in 4 steps</h2>
+            <Reveal><h2 className="text-4xl md:text-5xl font-black tracking-tight">Live in 4 steps</h2></Reveal>
           </div>
           <div className="grid md:grid-cols-4 gap-6">
             {STEPS.map((s, i) => (
-              <div key={i} className="relative" {...rv} data-reveal>
+              <Reveal key={i} delay={i * 0.1} className="relative">
                 {i < 3 && <div className="hidden md:block absolute top-6 left-full w-full h-px bg-surface-300 z-0" />}
                 <div className="relative z-10">
                   <div className="w-12 h-12 bg-brand-600 text-white rounded-2xl flex items-center justify-center font-black text-sm mb-4">
@@ -218,7 +227,7 @@ export default function Home() {
                   <h3 className="font-bold text-base mb-2">{s.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -229,27 +238,27 @@ export default function Home() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-5">
             <p className="text-sm font-semibold text-brand-600 tracking-widest uppercase mb-3">Pricing</p>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight" {...rv} data-reveal>Pay only for what you use</h2>
-            <p className="text-gray-500 mt-3" {...rv} data-reveal>Tokens never expire. No monthly subscription.</p>
+            <Reveal><h2 className="text-4xl md:text-5xl font-black tracking-tight">Pay only for what you use</h2></Reveal>
+            <Reveal delay={0.05}><p className="text-gray-500 mt-3">Tokens never expire. No monthly subscription.</p></Reveal>
           </div>
 
-          {/* Cost reference */}
-          <div className="card p-6 mb-10 max-w-2xl mx-auto" {...rv} data-reveal>
-            <p className="font-semibold text-sm text-gray-600 mb-4">Token cost per action</p>
-            <div className="grid grid-cols-2 gap-2">
-              {COSTS.map((c, i) => (
-                <div key={i} className="flex items-center justify-between py-2 border-b border-surface-100 last:border-0">
-                  <span className="text-sm text-gray-600 flex items-center gap-2"><span>{c.icon}</span>{c.action}</span>
-                  <span className="font-mono font-bold text-sm text-brand-700">{c.cost === 0 ? 'FREE' : `${c.cost}`}</span>
-                </div>
-              ))}
+          <Reveal className="max-w-2xl mx-auto mb-10">
+            <div className="card p-6">
+              <p className="font-semibold text-sm text-gray-600 mb-4">Token cost per action</p>
+              <div className="grid grid-cols-2 gap-2">
+                {COSTS.map((c, i) => (
+                  <div key={i} className="flex items-center justify-between py-2 border-b border-surface-100 last:border-0">
+                    <span className="text-sm text-gray-600 flex items-center gap-2"><span>{c.icon}</span>{c.action}</span>
+                    <span className="font-mono font-bold text-sm text-brand-700">{c.cost === 0 ? 'FREE' : `${c.cost}`}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          </Reveal>
 
-          {/* Packs */}
           <div className="grid md:grid-cols-3 gap-5">
             {PACKS.map((p, i) => (
-              <div key={i} className={`relative rounded-2xl border p-6 ${p.popular ? 'bg-brand-600 border-brand-600 text-white shadow-card-lg' : 'bg-white border-surface-200 shadow-card'}`} {...rv} data-reveal>
+              <Reveal key={i} delay={i * 0.08} className={`relative rounded-2xl border p-6 ${p.popular ? 'bg-brand-600 border-brand-600 text-white shadow-card-lg' : 'bg-white border-surface-200 shadow-card'}`}>
                 {p.popular && (
                   <div className="absolute -top-3 right-5 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
                     Most popular
@@ -257,7 +266,7 @@ export default function Home() {
                 )}
                 <div className="text-3xl mb-3">{p.icon}</div>
                 <div className={`font-bold text-lg mb-1 ${p.popular ? 'text-white' : ''}`}>{p.label}</div>
-                <div className={`text-4xl font-black mb-1 ${p.popular ? 'text-white' : ''}`}>RM{p.myr}<div>
+                <div className={`text-4xl font-black mb-1 ${p.popular ? 'text-white' : ''}`}>RM{p.myr}</div>
                 <div className={`text-sm mb-5 ${p.popular ? 'text-brand-200' : 'text-gray-500'}`}>{p.tokens} tokens · {p.builds} website builds</div>
                 <ul className="space-y-2 mb-6">
                   {['Tokens never expire', 'All features included', 'Priority support'].map((item, j) => (
@@ -270,7 +279,7 @@ export default function Home() {
                 <Link href="/auth/signup" className={`btn btn-lg w-full ${p.popular ? 'bg-white text-brand-700 border-white hover:bg-brand-50' : 'btn-primary'}`}>
                   Get {p.tokens} tokens <ArrowRight size={15} />
                 </Link>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -280,11 +289,11 @@ export default function Home() {
       <section className="py-24 px-5 bg-surface-50 border-y border-surface-200">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-black tracking-tight" {...rv} data-reveal>Loved by Malaysian SMEs</h2>
+            <Reveal><h2 className="text-4xl font-black tracking-tight">Loved by Malaysian SMEs</h2></Reveal>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
             {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="card p-6" {...rv} data-reveal>
+              <Reveal key={i} delay={i * 0.08} className="card p-6">
                 <div className="flex gap-0.5 mb-4">
                   {[...Array(t.rating)].map((_, j) => <Star key={j} size={14} fill="currentColor" className="text-yellow-400" />)}
                 </div>
@@ -296,7 +305,7 @@ export default function Home() {
                     <div className="text-xs text-gray-400">{t.biz}</div>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -326,9 +335,9 @@ export default function Home() {
             HarNova
           </div>
           <div className="flex gap-6 text-sm">
-            <Link href="/auth/login"   className="hover:text-white transition-colors">Login</Link>
-            <Link href="/auth/signup"  className="hover:text-white transition-colors">Sign up</Link>
-            <Link href="#pricing"      className="hover:text-white transition-colors">Pricing</Link>
+            <Link href="/auth/login" className="hover:text-white transition-colors">Login</Link>
+            <Link href="/auth/signup" className="hover:text-white transition-colors">Sign up</Link>
+            <Link href="#pricing" className="hover:text-white transition-colors">Pricing</Link>
             <a href="https://wa.me/60182085097" target="_blank" rel="noopener" className="hover:text-white transition-colors">WhatsApp</a>
           </div>
           <p className="text-xs">© 2025 HarNova · harnova.my</p>
