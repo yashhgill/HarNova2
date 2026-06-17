@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --sidebar-w: 240px;
+}
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { @apply font-sans text-gray-900; }
+
+  ::-webkit-scrollbar       { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-gray-300 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-gray-400; }
+}
+
+@layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-xl
+           transition-all duration-150 select-none cursor-pointer border
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-brand-600 text-white border-brand-600
+           hover:bg-brand-700 hover:border-brand-700
+           shadow-sm hover:shadow-card active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply btn bg-white text-gray-700 border-surface-300
+           hover:bg-surface-100 hover:border-surface-300
+           shadow-sm active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-gray-600 border-transparent
+           hover:bg-surface-100 hover:text-gray-900;
+  }
+  .btn-danger {
+    @apply btn bg-red-600 text-white border-red-600
+           hover:bg-red-700 shadow-sm active:scale-[0.98];
+  }
+  .btn-sm  { @apply text-sm px-3 py-1.5; }
+  .btn-md  { @apply text-sm px-4 py-2; }
+  .btn-lg  { @apply text-base px-5 py-2.5; }
+  .btn-xl  { @apply text-base px-6 py-3; }
+
+  /* Cards */
+  .card     { @apply bg-white rounded-2xl border border-surface-200 shadow-card; }
+  .card-md  { @apply bg-white rounded-2xl border border-surface-200 shadow-card-md; }
+  .card-lg  { @apply bg-white rounded-2xl border border-surface-200 shadow-card-lg; }
+
+  /* Inputs */
+  .input {
+    @apply w-full px-3.5 py-2.5 text-sm bg-white border border-surface-300 rounded-xl
+           placeholder:text-gray-400
+           focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500
+           transition-all;
+  }
+  .textarea { @apply input resize-none; }
+
+  /* Token badge */
+  .token-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
+           bg-brand-50 text-brand-700 border border-brand-100
+           text-xs font-semibold;
+  }
+
+  /* Status dots */
+  .status-dot { @apply w-2 h-2 rounded-full flex-shrink-0; }
+  .status-draft     { @apply status-dot bg-gray-400; }
+  .status-building  { @apply status-dot bg-yellow-400 animate-pulse; }
+  .status-deployed  { @apply status-dot bg-emerald-500; }
+  .status-expired   { @apply status-dot bg-orange-400; }
+  .status-error     { @apply status-dot bg-red-500; }
+
+  /* Skeleton */
+  .skeleton {
+    @apply bg-gradient-to-r from-surface-100 via-surface-200 to-surface-100
+           bg-[length:200%_100%] animate-shimmer rounded-lg;
+  }
+}
+
+/* Prose for AI output preview */
+.preview-frame { border: none; width: 100%; height: 100%; }
