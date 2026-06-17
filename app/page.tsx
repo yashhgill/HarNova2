@@ -1,59 +1,120 @@
 'use client'
 import Link from 'next/link'
 import { ArrowRight, Check, Star } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useState, useRef } from 'react'
+
+const VIGNETTES = [
+  {
+    name: 'Mak Cik Kuih',
+    owner: 'Siti Aminah · Shah Alam',
+    before: 'Handwritten price list on a kitchen table, orders taken one WhatsApp message at a time.',
+    sketch: 'kuih',
+  },
+  {
+    name: 'Cikgu Nurul Tuition',
+    owner: 'Nurul Rashidah · Penang',
+    before: 'A photocopied flyer pinned to a notice board, phone number smudged from the rain.',
+    sketch: 'tuition',
+  },
+  {
+    name: 'Jahit Lina Tailoring',
+    owner: 'Lina · Ipoh',
+    before: 'A shopfront sign and a measuring tape — no way for new customers to find her.',
+    sketch: 'tailor',
+  },
+]
 
 const FEATURES = [
-  { icon: '🤖', title: 'Claude AI builds it', desc: 'Powered by Anthropic\'s Claude — describe your business in plain language and get a full, professional website instantly.' },
-  { icon: '⚡', title: 'Deploy in 60 seconds', desc: 'One-click deploy to a live harnova.my subdomain. Upgrade to a permanent URL or your own custom domain anytime.' },
-  { icon: '💾', title: 'Download your code', desc: 'Own your website forever. Download the full source code as a ZIP, no strings attached. Free.' },
-  { icon: '🔗', title: 'Push to GitHub', desc: 'Connect your GitHub account and push your site directly to a repo. CI/CD ready from day one.' },
-  { icon: '🌐', title: 'Custom domains', desc: 'Buy a .com or .my domain right from the dashboard. DNS configured automatically in minutes.' },
-  { icon: '📊', title: 'Token-based pricing', desc: 'Pay only for what you use. Tokens never expire. Top up anytime from RM100.' },
+  { icon: '🤖', title: 'Claude AI builds it', desc: "Describe your stall, your service, your craft — in your own words. Claude writes the whole site, content included." },
+  { icon: '⚡', title: 'Live in under a minute', desc: 'One click and your site is on a real address. No waiting, no developer, no back-and-forth.' },
+  { icon: '💾', title: 'You own the code', desc: 'Download everything, anytime, for free. Nothing about your business stays locked to us.' },
+  { icon: '🔗', title: 'Push to GitHub', desc: 'If you outgrow us, take it with you. One click sends your whole site to your own repo.' },
+  { icon: '🌐', title: 'A real domain', desc: 'Buy yourname.com right from your dashboard. We handle the technical setup.' },
+  { icon: '📊', title: 'Pay only for what you use', desc: 'No subscriptions, no surprise bills. Tokens never expire — top up from RM100.' },
 ]
 
 const STEPS = [
-  { n: '01', title: 'Sign up & get 10 free tokens', desc: 'Create your account. 10 tokens land instantly — enough to generate your first website.' },
-  { n: '02', title: 'Describe your business to AI', desc: 'Tell Claude what your business does. The more detail, the better the output.' },
-  { n: '03', title: 'Preview & refine', desc: 'See your website live in the browser. Tweak it, regenerate sections, or edit the code directly.' },
-  { n: '04', title: 'Deploy or download', desc: 'Go live with a HarNova subdomain, buy a custom domain, push to GitHub, or download the zip.' },
+  { n: '01', title: 'Tell us about your business', desc: 'A sentence or two is enough — what you sell, who it\'s for, what makes it yours.' },
+  { n: '02', title: 'Claude writes the site', desc: 'Real copy, real layout, built around what you actually do — not a generic template.' },
+  { n: '03', title: 'See it, tweak it', desc: 'Change the wording, regenerate a section, make it sound like you.' },
+  { n: '04', title: 'Put it in the world', desc: 'A free address today, or your own domain when you\'re ready to make it permanent.' },
 ]
 
 const PACKS = [
-  { tokens: 100, myr: 100, label: 'Starter', icon: '🌱', builds: 10 },
-  { tokens: 200, myr: 200, label: 'Builder', icon: '🏗️', builds: 20, popular: true },
-  { tokens: 500, myr: 400, label: 'Pro',     icon: '🚀', builds: 50 },
+  { tokens: 100, myr: 100, label: 'Starter', builds: 10 },
+  { tokens: 200, myr: 200, label: 'Builder', builds: 20, popular: true },
+  { tokens: 500, myr: 400, label: 'Pro',     builds: 50 },
 ]
 
 const TESTIMONIALS = [
-  { name: 'Siti Aminah', biz: 'Kuih Tradisional · Shah Alam', text: 'Described my shop in two sentences. Full website in 30 seconds. My orders doubled in a month.', rating: 5, avatar: 'SA', c: 'bg-brand-600' },
-  { name: 'Lim Kah Weng', biz: 'Auto Parts · Petaling Jaya', text: 'Way cheaper than hiring an agency. My site looks better than competitors who paid RM5,000+.', rating: 5, avatar: 'LK', c: 'bg-amber-500' },
-  { name: 'Nurul Rashidah', biz: 'Math Tutor · Penang', text: '20 new students in 3 months — all found me through the website HarNova built me.', rating: 5, avatar: 'NR', c: 'bg-emerald-500' },
+  { name: 'Siti Aminah', biz: 'Kuih Tradisional · Shah Alam', text: 'Described my shop in two sentences. Full website in 30 seconds. My orders doubled in a month.', rating: 5, avatar: 'SA' },
+  { name: 'Lim Kah Weng', biz: 'Auto Parts · Petaling Jaya', text: 'Way cheaper than hiring an agency. My site looks better than competitors who paid RM5,000+.', rating: 5, avatar: 'LK' },
+  { name: 'Nurul Rashidah', biz: 'Math Tutor · Penang', text: '20 new students in 3 months — all found me through the website HarNova built me.', rating: 5, avatar: 'NR' },
 ]
 
 const COSTS = [
-  { action: 'Generate a website',    cost: 10, icon: '✨' },
-  { action: 'Regenerate / tweak',    cost: 5,  icon: '🔄' },
-  { action: 'Deploy (2-day trial)',  cost: 5,  icon: '🚀' },
-  { action: 'Permanent hosting /mo', cost: 10, icon: '☁️' },
-  { action: 'Custom domain /year',   cost: 50, icon: '🌐' },
-  { action: 'GitHub push',           cost: 5,  icon: '🔗' },
-  { action: 'Download ZIP',          cost: 0,  icon: '💾' },
+  { action: 'Generate a website',    cost: 10 },
+  { action: 'Regenerate / tweak',    cost: 5 },
+  { action: 'Deploy (2-day trial)',  cost: 5 },
+  { action: 'Permanent hosting /mo', cost: 10 },
+  { action: 'Custom domain /year',   cost: 50 },
+  { action: 'GitHub push',           cost: 5 },
+  { action: 'Download ZIP',          cost: 0 },
 ]
 
 function Reveal({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
-    <div
-      data-reveal
-      className={className}
-      style={{ opacity: 0, transform: 'translateY(20px)', transition: `all 0.55s ease-out ${delay}s` }}
-    >
+    <div data-reveal className={className} style={{ opacity: 0, transform: 'translateY(20px)', transition: `opacity 0.6s ease-out ${delay}s, transform 0.6s ease-out ${delay}s` }}>
       {children}
     </div>
   )
 }
 
+// Hand-drawn-feel sketch icons for each vignette's "before" state
+function SketchIcon({ type }: { type: string }) {
+  if (type === 'kuih') {
+    return (
+      <svg viewBox="0 0 120 90" className="w-full h-full">
+        <rect x="8" y="50" width="104" height="32" rx="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M14 50 L20 30 L100 30 L106 50" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <circle cx="35" cy="40" r="6" fill="none" stroke="currentColor" strokeWidth="1.2" />
+        <circle cx="60" cy="38" r="7" fill="none" stroke="currentColor" strokeWidth="1.2" />
+        <circle cx="85" cy="41" r="5.5" fill="none" stroke="currentColor" strokeWidth="1.2" />
+        <line x1="20" y1="62" x2="60" y2="60" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" opacity="0.5" />
+        <line x1="20" y1="70" x2="50" y2="69" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" opacity="0.5" />
+      </svg>
+    )
+  }
+  if (type === 'tuition') {
+    return (
+      <svg viewBox="0 0 120 90" className="w-full h-full">
+        <rect x="20" y="10" width="80" height="70" rx="1" fill="none" stroke="currentColor" strokeWidth="1.5" />
+        <line x1="30" y1="26" x2="90" y2="26" stroke="currentColor" strokeWidth="1.3" />
+        <line x1="30" y1="36" x2="80" y2="36" stroke="currentColor" strokeWidth="1" opacity="0.6" />
+        <line x1="30" y1="44" x2="85" y2="44" stroke="currentColor" strokeWidth="1" opacity="0.6" />
+        <line x1="30" y1="52" x2="70" y2="52" stroke="currentColor" strokeWidth="1" opacity="0.6" />
+        <rect x="30" y="60" width="34" height="12" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="2 2" opacity="0.7" />
+        <circle cx="95" cy="18" r="9" fill="none" stroke="currentColor" strokeWidth="1.3" />
+        <line x1="20" y1="5" x2="100" y2="3" stroke="currentColor" strokeWidth="1" opacity="0.4" />
+      </svg>
+    )
+  }
+  return (
+    <svg viewBox="0 0 120 90" className="w-full h-full">
+      <path d="M40 15 L80 15 L88 30 L75 30 L75 78 L45 78 L45 30 L32 30 Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <line x1="50" y1="40" x2="70" y2="40" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+      <line x1="50" y1="50" x2="70" y2="50" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+      <circle cx="20" cy="55" r="3" fill="none" stroke="currentColor" strokeWidth="1.2" />
+      <line x1="20" y1="58" x2="20" y2="75" stroke="currentColor" strokeWidth="1.2" />
+      <line x1="14" y1="65" x2="26" y2="65" stroke="currentColor" strokeWidth="1.2" />
+    </svg>
+  )
+}
+
 export default function Home() {
+  const [activeVignette, setActiveVignette] = useState(0)
+  const [morphed, setMorphed] = useState(false)
+
   useEffect(() => {
     const els = document.querySelectorAll('[data-reveal]')
     const obs = new IntersectionObserver(entries => {
@@ -64,28 +125,70 @@ export default function Home() {
           el.style.transform = 'translateY(0)'
         }
       })
-    }, { threshold: 0.1 })
+    }, { threshold: 0.12 })
     els.forEach(el => obs.observe(el))
     return () => obs.disconnect()
   }, [])
 
+  // Orchestrated hero sequence: sketch shows, then morphs into the live site, then cycles
+  useEffect(() => {
+    let cycle: ReturnType<typeof setTimeout>
+    const runCycle = () => {
+      setMorphed(false)
+      const t1 = setTimeout(() => setMorphed(true), 1800)
+      const t2 = setTimeout(() => {
+        setActiveVignette(v => (v + 1) % VIGNETTES.length)
+      }, 5200)
+      cycle = t2
+      return () => { clearTimeout(t1); clearTimeout(t2) }
+    }
+    const cleanup = runCycle()
+    return cleanup
+  }, [activeVignette])
+
+  const current = VIGNETTES[activeVignette]
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ background: '#FBF6EE' }}>
+      <style>{`
+        .clay { color: #B8472E; }
+        .bg-clay { background: #B8472E; }
+        .border-clay { border-color: #B8472E; }
+        .turmeric { color: #C8842A; }
+        .bg-turmeric { background: #E8A33D; }
+        .charcoal { color: #211C18; }
+        .bg-charcoal { background: #211C18; }
+        .sage { color: #5C7355; }
+        .bg-sage { background: #5C7355; }
+        .font-serif-display { font-family: var(--font-fraunces), Georgia, serif; }
+        @keyframes drawIn { from { stroke-dashoffset: 240; opacity: 0; } to { stroke-dashoffset: 0; opacity: 1; } }
+        @keyframes paperFloat { 0%, 100% { transform: rotate(-1deg) translateY(0); } 50% { transform: rotate(0.5deg) translateY(-4px); } }
+        @keyframes screenRise { from { opacity: 0; transform: translateY(16px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        .sketch-draw path, .sketch-draw circle, .sketch-draw rect, .sketch-draw line {
+          stroke-dasharray: 240;
+          animation: drawIn 1.4s ease-out forwards;
+        }
+        .paper-card { animation: paperFloat 5s ease-in-out infinite; }
+        .screen-rise { animation: screenRise 0.6s ease-out forwards; }
+      `}</style>
+
       {/* NAV */}
-      <nav className="sticky top-0 z-50 border-b border-surface-200 bg-white/80 backdrop-blur-xl">
+      <nav className="sticky top-0 z-50 border-b" style={{ borderColor: 'rgba(33,28,24,0.1)', background: 'rgba(251,246,238,0.88)', backdropFilter: 'blur(12px)' }}>
         <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl tracking-tight">
-            <span className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white text-sm font-black">HN</span>
+          <Link href="/" className="flex items-center gap-2 font-serif-display font-medium text-xl tracking-tight charcoal">
+            <span className="w-8 h-8 bg-clay rounded-lg flex items-center justify-center text-white text-sm font-bold font-sans">HN</span>
             HarNova
           </Link>
-          <div className="hidden md:flex items-center gap-7 text-sm font-medium text-gray-500">
-            <Link href="#features" className="hover:text-gray-900 transition-colors">Features</Link>
-            <Link href="#pricing" className="hover:text-gray-900 transition-colors">Pricing</Link>
-            <Link href="#how" className="hover:text-gray-900 transition-colors">How it works</Link>
+          <div className="hidden md:flex items-center gap-7 text-sm font-medium" style={{ color: 'rgba(33,28,24,0.6)' }}>
+            <Link href="#features" className="hover:opacity-70 transition-opacity">Features</Link>
+            <Link href="#pricing" className="hover:opacity-70 transition-opacity">Pricing</Link>
+            <Link href="#how" className="hover:opacity-70 transition-opacity">How it works</Link>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/auth/login" className="btn btn-ghost btn-sm hidden md:flex">Log in</Link>
-            <Link href="/auth/signup" className="btn btn-primary btn-sm">
+            <Link href="/auth/login" className="text-sm font-medium charcoal hidden md:flex hover:opacity-70 transition-opacity">Log in</Link>
+            <Link href="/auth/signup" className="inline-flex items-center gap-1.5 text-sm font-semibold text-white bg-clay px-4 py-2 rounded-full hover:opacity-90 transition-opacity">
               Get started free <ArrowRight size={14} />
             </Link>
           </div>
@@ -93,97 +196,109 @@ export default function Home() {
       </nav>
 
       {/* HERO */}
-      <section className="relative overflow-hidden pt-20 pb-28 px-5">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-500/5 rounded-full blur-3xl" />
-          <div className="absolute top-20 right-0 w-72 h-72 bg-purple-500/5 rounded-full blur-3xl" />
-        </div>
-
-        <div className="relative max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-50 border border-brand-100 rounded-full text-brand-700 text-sm font-medium mb-8 animate-fade-in">
-            <span className="w-1.5 h-1.5 bg-brand-500 rounded-full animate-pulse" />
-            🇲🇾 Built for Malaysian SMEs · Powered by Claude AI
+      <section className="relative overflow-hidden pt-16 pb-20 px-5">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <p className="text-sm font-semibold turmeric mb-4 tracking-wide">🇲🇾 Built for Malaysian small businesses</p>
+            <h1 className="font-serif-display text-5xl md:text-6xl font-medium leading-[1.08] charcoal mb-6">
+              Every stall, every<br />tuition class, every<br />tailor — deserves<br />a website.
+            </h1>
+            <p className="text-lg leading-relaxed mb-8" style={{ color: 'rgba(33,28,24,0.65)', maxWidth: '460px' }}>
+              Describe what you do. Claude writes and builds the whole site —
+              real words, real layout, live in under a minute.
+            </p>
+            <div className="flex items-center gap-4 flex-wrap">
+              <Link href="/auth/signup" className="inline-flex items-center gap-2 text-base font-semibold text-white bg-clay px-7 py-3.5 rounded-full hover:opacity-90 transition-opacity">
+                Start building free <ArrowRight size={18} />
+              </Link>
+              <Link href="#how" className="inline-flex items-center gap-2 text-base font-semibold charcoal px-7 py-3.5 rounded-full border" style={{ borderColor: 'rgba(33,28,24,0.2)' }}>
+                See how it works
+              </Link>
+            </div>
+            <p className="text-sm mt-5" style={{ color: 'rgba(33,28,24,0.45)' }}>
+              10 free tokens on signup · No credit card needed
+            </p>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.05] mb-6 animate-fade-up">
-            Build your website<br />
-            <span className="bg-gradient-to-r from-brand-600 to-purple-600 bg-clip-text text-transparent">
-              with AI in minutes
-            </span>
-          </h1>
+          {/* Signature element: sketch-to-screen transformation */}
+          <div className="relative h-[420px] flex items-center justify-center">
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 text-center w-full">
+              <p className="font-serif-display text-base italic" style={{ color: 'rgba(33,28,24,0.55)' }}>
+                {current.name} <span className="not-italic" style={{ color: 'rgba(33,28,24,0.35)' }}>· {current.owner}</span>
+              </p>
+            </div>
 
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-up" style={{ animationDelay: '0.1s' }}>
-            Describe your business. Claude builds a full professional website.
-            Deploy live, buy a domain, push to GitHub — all from one dashboard.
-          </p>
-
-          <div className="flex items-center justify-center gap-4 flex-wrap animate-fade-up" style={{ animationDelay: '0.2s' }}>
-            <Link href="/auth/signup" className="btn btn-primary btn-xl">
-              Start building free <ArrowRight size={18} />
-            </Link>
-            <Link href="#how" className="btn btn-secondary btn-xl">
-              See how it works
-            </Link>
-          </div>
-
-          <p className="text-sm text-gray-400 mt-5 animate-fade-up" style={{ animationDelay: '0.3s' }}>
-            10 free tokens on signup · No credit card needed · Cancel anytime
-          </p>
-        </div>
-
-        {/* Hero mockup */}
-        <div className="relative max-w-5xl mx-auto mt-16 animate-fade-up" style={{ animationDelay: '0.4s' }}>
-          <div className="card-lg overflow-hidden">
-            <div className="flex h-[420px]">
-              <div className="w-72 border-r border-surface-200 bg-surface-50 p-4 flex flex-col gap-4 flex-shrink-0">
-                <div className="h-8 skeleton w-3/4" />
-                <div className="h-24 skeleton w-full" />
-                <div className="flex gap-2">
-                  <div className="h-7 skeleton w-20 rounded-full" />
-                  <div className="h-7 skeleton w-20 rounded-full" />
+            <div className="relative w-72 h-80 mt-8">
+              {/* Before: hand-drawn paper sketch */}
+              <div
+                key={`sketch-${activeVignette}`}
+                className="absolute inset-0 paper-card"
+                style={{
+                  background: '#FFFDF8',
+                  border: '1.5px solid rgba(33,28,24,0.18)',
+                  borderRadius: '4px',
+                  boxShadow: '0 8px 24px rgba(33,28,24,0.08)',
+                  padding: '28px 24px',
+                  opacity: morphed ? 0 : 1,
+                  transition: 'opacity 0.5s ease-out',
+                  pointerEvents: 'none',
+                }}
+              >
+                <div className="sketch-draw w-full h-32 mb-4" style={{ color: 'rgba(33,28,24,0.5)' }}>
+                  <SketchIcon type={current.sketch} />
                 </div>
-                <div className="mt-auto h-10 bg-brand-600 rounded-xl" />
+                <p className="text-sm leading-relaxed font-serif-display italic" style={{ color: 'rgba(33,28,24,0.55)' }}>
+                  {current.before}
+                </p>
               </div>
-              <div className="flex-1 bg-surface-50 p-4">
-                <div className="bg-white rounded-xl border border-surface-200 h-full overflow-hidden">
-                  <div className="h-8 bg-gray-900 flex items-center gap-1.5 px-3">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
-                    <div className="flex-1 mx-3 h-4 bg-gray-700 rounded-full" />
+
+              {/* After: live phone-style screen */}
+              <div
+                className={`absolute inset-0 rounded-2xl overflow-hidden ${morphed ? 'screen-rise' : ''}`}
+                style={{
+                  background: '#211C18',
+                  padding: '6px',
+                  opacity: morphed ? 1 : 0,
+                  transition: 'opacity 0.4s ease-out',
+                  pointerEvents: 'none',
+                }}
+              >
+                <div className="w-full h-full rounded-xl overflow-hidden" style={{ background: '#FBF6EE' }}>
+                  <div className="h-7 bg-clay flex items-center px-3">
+                    <span className="text-white text-xs font-semibold font-serif-display">{current.name}</span>
                   </div>
-                  <div className="p-6">
-                    <div className="h-8 skeleton w-2/3 mb-3" />
-                    <div className="h-4 skeleton w-full mb-2" />
-                    <div className="h-4 skeleton w-5/6 mb-5" />
-                    <div className="flex gap-3">
-                      <div className="h-9 w-28 bg-brand-600 rounded-lg" />
-                      <div className="h-9 w-24 skeleton rounded-lg" />
+                  <div className="p-3">
+                    <div className="h-16 rounded-lg mb-2" style={{ background: 'rgba(232,163,61,0.35)' }} />
+                    <div className="h-2.5 w-3/4 rounded mb-1.5" style={{ background: 'rgba(33,28,24,0.15)' }} />
+                    <div className="h-2.5 w-1/2 rounded mb-3" style={{ background: 'rgba(33,28,24,0.1)' }} />
+                    <div className="flex gap-2 mb-3">
+                      <div className="h-7 w-20 rounded-full bg-clay" />
+                      <div className="h-7 w-16 rounded-full" style={{ background: 'rgba(33,28,24,0.08)' }} />
                     </div>
-                    <div className="mt-6 grid grid-cols-3 gap-3">
-                      {[0, 1, 2].map(i => <div key={i} className="aspect-video skeleton rounded-lg" />)}
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {[0, 1, 2].map(i => <div key={i} className="aspect-square rounded" style={{ background: 'rgba(33,28,24,0.06)' }} />)}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="absolute -bottom-4 left-8 card px-4 py-2.5 shadow-card-lg flex items-center gap-2 text-sm font-medium">
-            <span className="w-2 h-2 bg-emerald-500 rounded-full" /> Live in 30 seconds
-          </div>
-          <div className="absolute -bottom-4 right-8 card px-4 py-2.5 shadow-card-lg flex items-center gap-2 text-sm font-medium">
-            ⚡ 10 tokens used
+
+            <div className="absolute bottom-0 flex gap-1.5">
+              {VIGNETTES.map((_, i) => (
+                <span key={i} className="w-1.5 h-1.5 rounded-full transition-all" style={{ background: i === activeVignette ? '#B8472E' : 'rgba(33,28,24,0.15)' }} />
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* MARQUEE */}
-      <div className="bg-brand-600 py-3 overflow-hidden">
-        <div className="flex gap-10 animate-[marquee_25s_linear_infinite] w-max">
+      <div className="bg-charcoal py-3 overflow-hidden">
+        <div className="flex gap-10 w-max" style={{ animation: 'marqueeScroll 28s linear infinite' }}>
           {[0, 1].map(ri =>
-            ['AI-Powered', 'Mobile-First', 'WhatsApp Integration', 'SEO Ready', 'Deploy in 60s', 'Download Code', 'GitHub Connect', 'Custom Domains', 'Malaysian SME Focus', 'Token-Based Pricing'].map((item, i) => (
-              <span key={`${ri}-${i}`} className="text-white/90 text-sm font-medium flex items-center gap-3 whitespace-nowrap">
-                <span className="w-1 h-1 rounded-full bg-white/50" /> {item}
+            ['Built for hawkers', 'Built for tutors', 'Built for tailors', 'Built for home bakers', 'Built for freelancers', 'Built for every small business'].map((item, i) => (
+              <span key={`${ri}-${i}`} className="text-sm font-medium flex items-center gap-3 whitespace-nowrap" style={{ color: 'rgba(251,246,238,0.85)' }}>
+                <span className="w-1 h-1 rounded-full bg-turmeric" /> {item}
               </span>
             ))
           )}
@@ -193,16 +308,16 @@ export default function Home() {
       {/* FEATURES */}
       <section id="features" className="py-24 px-5">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-sm font-semibold text-brand-600 tracking-widest uppercase mb-3">Features</p>
-            <Reveal><h2 className="text-4xl md:text-5xl font-black tracking-tight">Everything you need to go online</h2></Reveal>
+          <div className="mb-14">
+            <p className="text-sm font-semibold clay mb-3 tracking-wide">What you get</p>
+            <Reveal><h2 className="font-serif-display text-4xl font-medium charcoal max-w-lg">Everything a small business needs to be found online</h2></Reveal>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
             {FEATURES.map((f, i) => (
-              <Reveal key={i} delay={i * 0.08} className="card p-6 hover:shadow-card-md transition-shadow">
+              <Reveal key={i} delay={i * 0.07} className="p-6 rounded-2xl" style={{ background: 'white', border: '1px solid rgba(33,28,24,0.08)' } as React.CSSProperties}>
                 <div className="text-3xl mb-4">{f.icon}</div>
-                <h3 className="font-bold text-lg mb-2">{f.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{f.desc}</p>
+                <h3 className="font-serif-display font-medium text-lg mb-2 charcoal">{f.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: 'rgba(33,28,24,0.6)' }}>{f.desc}</p>
               </Reveal>
             ))}
           </div>
@@ -210,23 +325,18 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how" className="py-24 px-5 bg-surface-50 border-y border-surface-200">
+      <section id="how" className="py-24 px-5" style={{ background: 'rgba(232,163,61,0.08)' }}>
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-sm font-semibold text-brand-600 tracking-widest uppercase mb-3">How it works</p>
-            <Reveal><h2 className="text-4xl md:text-5xl font-black tracking-tight">Live in 4 steps</h2></Reveal>
+          <div className="mb-14">
+            <p className="text-sm font-semibold clay mb-3 tracking-wide">How it works</p>
+            <Reveal><h2 className="font-serif-display text-4xl font-medium charcoal">From idea to live site, today</h2></Reveal>
           </div>
           <div className="grid md:grid-cols-4 gap-6">
             {STEPS.map((s, i) => (
-              <Reveal key={i} delay={i * 0.1} className="relative">
-                {i < 3 && <div className="hidden md:block absolute top-6 left-full w-full h-px bg-surface-300 z-0" />}
-                <div className="relative z-10">
-                  <div className="w-12 h-12 bg-brand-600 text-white rounded-2xl flex items-center justify-center font-black text-sm mb-4">
-                    {s.n}
-                  </div>
-                  <h3 className="font-bold text-base mb-2">{s.title}</h3>
-                  <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
-                </div>
+              <Reveal key={i} delay={i * 0.09}>
+                <div className="font-serif-display text-3xl font-medium turmeric mb-3">{s.n}</div>
+                <h3 className="font-medium text-base mb-2 charcoal">{s.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: 'rgba(33,28,24,0.6)' }}>{s.desc}</p>
               </Reveal>
             ))}
           </div>
@@ -236,20 +346,20 @@ export default function Home() {
       {/* PRICING */}
       <section id="pricing" className="py-24 px-5">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-5">
-            <p className="text-sm font-semibold text-brand-600 tracking-widest uppercase mb-3">Pricing</p>
-            <Reveal><h2 className="text-4xl md:text-5xl font-black tracking-tight">Pay only for what you use</h2></Reveal>
-            <Reveal delay={0.05}><p className="text-gray-500 mt-3">Tokens never expire. No monthly subscription.</p></Reveal>
+          <div className="mb-10">
+            <p className="text-sm font-semibold clay mb-3 tracking-wide">Pricing</p>
+            <Reveal><h2 className="font-serif-display text-4xl font-medium charcoal mb-2">Pay only for what you use</h2></Reveal>
+            <Reveal delay={0.05}><p style={{ color: 'rgba(33,28,24,0.6)' }}>Tokens never expire. No monthly subscription.</p></Reveal>
           </div>
 
-          <Reveal className="max-w-2xl mx-auto mb-10">
-            <div className="card p-6">
-              <p className="font-semibold text-sm text-gray-600 mb-4">Token cost per action</p>
+          <Reveal className="max-w-2xl mb-10">
+            <div className="p-6 rounded-2xl" style={{ background: 'white', border: '1px solid rgba(33,28,24,0.08)' }}>
+              <p className="font-medium text-sm mb-4 charcoal">Token cost per action</p>
               <div className="grid grid-cols-2 gap-2">
                 {COSTS.map((c, i) => (
-                  <div key={i} className="flex items-center justify-between py-2 border-b border-surface-100 last:border-0">
-                    <span className="text-sm text-gray-600 flex items-center gap-2"><span>{c.icon}</span>{c.action}</span>
-                    <span className="font-mono font-bold text-sm text-brand-700">{c.cost === 0 ? 'FREE' : `${c.cost}`}</span>
+                  <div key={i} className="flex items-center justify-between py-2 border-b last:border-0" style={{ borderColor: 'rgba(33,28,24,0.06)' }}>
+                    <span className="text-sm" style={{ color: 'rgba(33,28,24,0.7)' }}>{c.action}</span>
+                    <span className="font-mono font-semibold text-sm clay">{c.cost === 0 ? 'Free' : c.cost}</span>
                   </div>
                 ))}
               </div>
@@ -258,27 +368,37 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-5">
             {PACKS.map((p, i) => (
-              <Reveal key={i} delay={i * 0.08} className={`relative rounded-2xl border p-6 ${p.popular ? 'bg-brand-600 border-brand-600 text-white shadow-card-lg' : 'bg-white border-surface-200 shadow-card'}`}>
-                {p.popular && (
-                  <div className="absolute -top-3 right-5 bg-yellow-400 text-black text-xs font-bold px-3 py-1 rounded-full">
-                    Most popular
+              <Reveal key={i} delay={i * 0.08}>
+                <div
+                  className="relative rounded-2xl p-6 h-full"
+                  style={p.popular ? { background: '#211C18', color: 'white' } : { background: 'white', border: '1px solid rgba(33,28,24,0.08)' }}
+                >
+                  {p.popular && (
+                    <div className="absolute -top-3 right-5 bg-turmeric text-white text-xs font-semibold px-3 py-1 rounded-full">
+                      Most popular
+                    </div>
+                  )}
+                  <div className={`font-medium text-lg mb-1 font-serif-display ${p.popular ? 'text-white' : 'charcoal'}`}>{p.label}</div>
+                  <div className={`text-4xl font-serif-display font-medium mb-1 ${p.popular ? 'text-white' : 'charcoal'}`}>RM{p.myr}</div>
+                  <div className="text-sm mb-5" style={{ color: p.popular ? 'rgba(251,246,238,0.6)' : 'rgba(33,28,24,0.55)' }}>
+                    {p.tokens} tokens · {p.builds} website builds
                   </div>
-                )}
-                <div className="text-3xl mb-3">{p.icon}</div>
-                <div className={`font-bold text-lg mb-1 ${p.popular ? 'text-white' : ''}`}>{p.label}</div>
-                <div className={`text-4xl font-black mb-1 ${p.popular ? 'text-white' : ''}`}>RM{p.myr}</div>
-                <div className={`text-sm mb-5 ${p.popular ? 'text-brand-200' : 'text-gray-500'}`}>{p.tokens} tokens · {p.builds} website builds</div>
-                <ul className="space-y-2 mb-6">
-                  {['Tokens never expire', 'All features included', 'Priority support'].map((item, j) => (
-                    <li key={j} className={`text-sm flex items-center gap-2 ${p.popular ? 'text-brand-100' : 'text-gray-600'}`}>
-                      <Check size={14} className={p.popular ? 'text-yellow-400' : 'text-brand-600'} />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/auth/signup" className={`btn btn-lg w-full ${p.popular ? 'bg-white text-brand-700 border-white hover:bg-brand-50' : 'btn-primary'}`}>
-                  Get {p.tokens} tokens <ArrowRight size={15} />
-                </Link>
+                  <ul className="space-y-2 mb-6">
+                    {['Tokens never expire', 'All features included', 'Priority support'].map((item, j) => (
+                      <li key={j} className="text-sm flex items-center gap-2" style={{ color: p.popular ? 'rgba(251,246,238,0.85)' : 'rgba(33,28,24,0.7)' }}>
+                        <Check size={14} className={p.popular ? 'text-turmeric' : 'clay'} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/auth/signup"
+                    className="flex items-center justify-center gap-2 w-full text-sm font-semibold py-2.5 rounded-full"
+                    style={p.popular ? { background: '#E8A33D', color: '#211C18' } : { background: '#B8472E', color: 'white' }}
+                  >
+                    Get {p.tokens} tokens <ArrowRight size={15} />
+                  </Link>
+                </div>
               </Reveal>
             ))}
           </div>
@@ -286,23 +406,23 @@ export default function Home() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="py-24 px-5 bg-surface-50 border-y border-surface-200">
+      <section className="py-24 px-5" style={{ background: 'rgba(92,115,85,0.06)' }}>
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <Reveal><h2 className="text-4xl font-black tracking-tight">Loved by Malaysian SMEs</h2></Reveal>
+          <div className="mb-14">
+            <Reveal><h2 className="font-serif-display text-4xl font-medium charcoal">Real businesses, real results</h2></Reveal>
           </div>
           <div className="grid md:grid-cols-3 gap-5">
             {TESTIMONIALS.map((t, i) => (
-              <Reveal key={i} delay={i * 0.08} className="card p-6">
+              <Reveal key={i} delay={i * 0.08} className="p-6 rounded-2xl" style={{ background: 'white', border: '1px solid rgba(33,28,24,0.08)' } as React.CSSProperties}>
                 <div className="flex gap-0.5 mb-4">
-                  {[...Array(t.rating)].map((_, j) => <Star key={j} size={14} fill="currentColor" className="text-yellow-400" />)}
+                  {[...Array(t.rating)].map((_, j) => <Star key={j} size={14} fill="#E8A33D" stroke="none" />)}
                 </div>
-                <p className="text-gray-700 text-sm leading-relaxed mb-5 italic">"{t.text}"</p>
+                <p className="text-sm leading-relaxed mb-5 italic font-serif-display" style={{ color: 'rgba(33,28,24,0.75)' }}>"{t.text}"</p>
                 <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full ${t.c} text-white text-xs font-bold flex items-center justify-center flex-shrink-0`}>{t.avatar}</div>
+                  <div className="w-10 h-10 rounded-full bg-sage text-white text-xs font-semibold flex items-center justify-center flex-shrink-0">{t.avatar}</div>
                   <div>
-                    <div className="font-semibold text-sm">{t.name}</div>
-                    <div className="text-xs text-gray-400">{t.biz}</div>
+                    <div className="font-medium text-sm charcoal">{t.name}</div>
+                    <div className="text-xs" style={{ color: 'rgba(33,28,24,0.45)' }}>{t.biz}</div>
                   </div>
                 </div>
               </Reveal>
@@ -312,35 +432,35 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 px-5 bg-brand-600">
+      <section className="py-24 px-5 bg-charcoal">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight mb-5">
-            Your business deserves a great website
+          <h2 className="font-serif-display text-4xl md:text-5xl font-medium text-white mb-5">
+            Your craft deserves to be seen
           </h2>
-          <p className="text-brand-200 text-lg mb-8 leading-relaxed">
-            Sign up free, get 10 tokens, and build your first AI website today.
+          <p className="text-lg mb-8 leading-relaxed" style={{ color: 'rgba(251,246,238,0.65)' }}>
+            Sign up free, get 10 tokens, and build your first website today.
           </p>
-          <Link href="/auth/signup" className="btn bg-white text-brand-700 border-white hover:bg-brand-50 btn-xl">
+          <Link href="/auth/signup" className="inline-flex items-center gap-2 text-base font-semibold px-8 py-4 rounded-full bg-turmeric" style={{ color: '#211C18' }}>
             Start for free <ArrowRight size={18} />
           </Link>
-          <p className="text-brand-300/70 text-sm mt-4">No credit card · 10 free tokens · harnova.my</p>
+          <p className="text-sm mt-4" style={{ color: 'rgba(251,246,238,0.4)' }}>No credit card · 10 free tokens · harnova.my</p>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-gray-950 text-gray-500 py-10 px-5 border-t border-gray-900">
+      <footer className="py-10 px-5" style={{ background: '#1A1611' }}>
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-5">
-          <div className="flex items-center gap-2 text-white font-bold">
-            <span className="w-7 h-7 bg-brand-600 rounded-lg flex items-center justify-center text-white text-xs font-black">HN</span>
+          <div className="flex items-center gap-2 text-white font-serif-display font-medium">
+            <span className="w-7 h-7 bg-clay rounded-lg flex items-center justify-center text-white text-xs font-bold font-sans">HN</span>
             HarNova
           </div>
-          <div className="flex gap-6 text-sm">
+          <div className="flex gap-6 text-sm" style={{ color: 'rgba(251,246,238,0.5)' }}>
             <Link href="/auth/login" className="hover:text-white transition-colors">Login</Link>
             <Link href="/auth/signup" className="hover:text-white transition-colors">Sign up</Link>
             <Link href="#pricing" className="hover:text-white transition-colors">Pricing</Link>
             <a href="https://wa.me/60182085097" target="_blank" rel="noopener" className="hover:text-white transition-colors">WhatsApp</a>
           </div>
-          <p className="text-xs">© 2025 HarNova · harnova.my</p>
+          <p className="text-xs" style={{ color: 'rgba(251,246,238,0.35)' }}>© 2025 HarNova · harnova.my</p>
         </div>
       </footer>
     </div>
