@@ -185,6 +185,7 @@ export default function Home() {
             <Link href="#features" className="hover:opacity-70 transition-opacity">Features</Link>
             <Link href="#pricing" className="hover:opacity-70 transition-opacity">Pricing</Link>
             <Link href="#how" className="hover:opacity-70 transition-opacity">How it works</Link>
+            <Link href="/enterprise" className="hover:opacity-70 transition-opacity">Enterprise</Link>
           </div>
           <div className="flex items-center gap-3">
             <Link href="/auth/login" className="text-sm font-medium charcoal hidden md:flex hover:opacity-70 transition-opacity">Log in</Link>
@@ -428,6 +429,125 @@ export default function Home() {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+
+      {/* ENTERPRISE / MEDILINK */}
+      <section className="py-24 px-5" style={{ background: '#0A0A0F' }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-14">
+            <p className="text-sm font-semibold mb-3 tracking-wide" style={{ color: '#7C3AFF' }}>Enterprise solutions</p>
+            <Reveal>
+              <h2 className="font-serif-display text-4xl font-medium text-white mb-3">
+                We don't just build websites.<br />We build platforms.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.05}>
+              <p className="text-lg" style={{ color: 'rgba(240,238,248,0.55)', maxWidth: '520px' }}>
+                For businesses that need more than a presence — HarNova builds full cloud systems, AI-powered products, and mission-critical infrastructure.
+              </p>
+            </Reveal>
+          </div>
+
+          {/* MediLink card */}
+          <Reveal>
+            <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid rgba(91,33,240,0.2)', background: '#13121A' }}>
+              <div className="grid md:grid-cols-2 gap-0">
+                {/* Left: info */}
+                <div className="p-10 flex flex-col justify-center">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
+                    style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)', color: '#22C55E' }}>
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />
+                    Live · Healthcare
+                  </div>
+                  <h3 className="font-serif-display text-3xl font-medium text-white mb-3">MediLink</h3>
+                  <p className="text-base mb-6 leading-relaxed" style={{ color: 'rgba(240,238,248,0.6)' }}>
+                    A high-availability hybrid cloud EHR platform for Malaysian clinics. Runs offline when internet drops. Syncs to AWS when it's back. 99% uptime SLA.
+                  </p>
+                  <ul className="space-y-2.5 mb-8">
+                    {[
+                      'MyKad IC kiosk check-in — camera-based, no NFC hardware',
+                      'Manchester Triage System AI — real clinical scoring',
+                      'DuitNow, TnG, FPX, and cash payment support',
+                      'Pharmacy inventory with expiry & low-stock alerts',
+                    ].map((f, i) => (
+                      <li key={i} className="flex items-start gap-2.5 text-sm" style={{ color: 'rgba(240,238,248,0.65)' }}>
+                        <span className="mt-0.5 flex-shrink-0 text-purple-400">✓</span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex gap-3 flex-wrap">
+                    <a href="mailto:hello@harnova.my?subject=MediLink Demo"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white"
+                      style={{ background: '#5B21F0' }}>
+                      Request a demo →
+                    </a>
+                    <a href="https://github.com/yashhgill/Medilink" target="_blank" rel="noopener"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold"
+                      style={{ border: '1px solid rgba(240,238,248,0.15)', color: 'rgba(240,238,248,0.7)' }}>
+                      View on GitHub
+                    </a>
+                  </div>
+                </div>
+                {/* Right: mini dashboard mockup */}
+                <div className="p-8 flex items-center justify-center" style={{ background: 'rgba(10,10,15,0.6)', borderLeft: '1px solid rgba(91,33,240,0.12)' }}>
+                  <div className="w-full max-w-xs rounded-xl overflow-hidden" style={{ background: '#0D0C14', border: '1px solid #2D2B3D', boxShadow: '0 20px 48px rgba(0,0,0,0.5)' }}>
+                    <div className="flex items-center gap-1.5 px-3 py-2.5" style={{ borderBottom: '1px solid #2D2B3D', background: '#0A0910' }}>
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                      <span className="ml-2 text-xs" style={{ color: '#55536A' }}>MediLink — Reception</span>
+                    </div>
+                    <div className="p-3 space-y-2">
+                      <div className="grid grid-cols-3 gap-1.5">
+                        {[['Queue', '14', '#7C3AFF'], ['Active', '3', '#F0EEF8'], ['Sync', 'Live', '#22C55E']].map(([l,v,c]) => (
+                          <div key={l} className="rounded-lg p-2.5" style={{ background: '#1C1B28', border: '1px solid #2D2B3D' }}>
+                            <div className="text-xs mb-1" style={{ color: '#55536A', textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: '8px' }}>{l}</div>
+                            <div className="font-bold text-sm" style={{ color: c, fontFamily: 'monospace' }}>{v}</div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="rounded-lg overflow-hidden" style={{ background: '#1C1B28', border: '1px solid #2D2B3D' }}>
+                        <div className="px-3 py-1.5 text-xs" style={{ color: '#55536A', borderBottom: '1px solid #2D2B3D', fontSize: '8px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Live Queue</div>
+                        {[
+                          ['#01', 'Arjun Rao', 'In Progress', '#7C3AFF'],
+                          ['#02', 'Mei Lin Chong', 'Pharmacy', '#60A5FA'],
+                          ['#03', 'Hafiz Rahman', 'Checked In', '#22C55E'],
+                          ['#04', 'Priya Nair', 'Waiting', '#F59E0B'],
+                        ].map(([n, name, status, c]) => (
+                          <div key={n} className="flex items-center gap-2 px-3 py-2" style={{ borderBottom: '1px solid rgba(45,43,61,0.5)', fontSize: '9px' }}>
+                            <span className="font-bold w-5" style={{ color: '#7C3AFF', fontFamily: 'monospace' }}>{n}</span>
+                            <span className="flex-1 text-white">{name}</span>
+                            <span className="px-1.5 py-0.5 rounded text-white font-semibold" style={{ background: c + '22', color: c, fontSize: '8px' }}>{status}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="rounded-lg p-2.5" style={{ background: 'rgba(91,33,240,0.08)', border: '1px solid rgba(91,33,240,0.2)' }}>
+                        <div className="text-xs font-semibold mb-1" style={{ color: '#7C3AFF', fontSize: '8px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>⚡ AI Triage — #03</div>
+                        <div className="flex items-center gap-2">
+                          <span className="px-1.5 py-0.5 rounded font-bold" style={{ background: 'rgba(245,158,11,0.15)', color: '#F59E0B', fontSize: '8px' }}>URGENT · Yellow</span>
+                          <span style={{ color: '#55536A', fontSize: '8px' }}>60 min target</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* View full startup page CTA */}
+          <Reveal delay={0.1}>
+            <div className="mt-10 text-center">
+              <a href="/enterprise"
+                className="inline-flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-full"
+                style={{ border: '1px solid rgba(91,33,240,0.3)', color: '#7C3AFF', background: 'rgba(91,33,240,0.06)' }}>
+                See all HarNova enterprise solutions →
+              </a>
+            </div>
+          </Reveal>
         </div>
       </section>
 
