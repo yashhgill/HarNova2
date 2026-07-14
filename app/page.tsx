@@ -41,9 +41,9 @@ const STEPS = [
 ]
 
 const PACKS = [
-  { tokens: 100, myr: 100, label: 'Starter', builds: 10 },
-  { tokens: 200, myr: 200, label: 'Builder', builds: 20, popular: true },
-  { tokens: 500, myr: 400, label: 'Pro',     builds: 50 },
+  { tokens: 100, myr: 100, label: 'Starter', builds: 3 },
+  { tokens: 200, myr: 200, label: 'Builder', builds: 6, popular: true },
+  { tokens: 500, myr: 400, label: 'Pro',     builds: 16 },
 ]
 
 const TESTIMONIALS = [
@@ -53,7 +53,7 @@ const TESTIMONIALS = [
 ]
 
 const COSTS = [
-  { action: 'Generate a website',    cost: 10 },
+  { action: 'Generate a website',    cost: 30 },
   { action: 'Regenerate / tweak',    cost: 5 },
   { action: 'Deploy (2-day trial)',  cost: 5 },
   { action: 'Permanent hosting /mo', cost: 10 },
