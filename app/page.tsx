@@ -358,7 +358,7 @@ export default function Home() {
                   <p className="font-semibold text-sm">Launch Discount — Limited Time</p>
                   <p className="text-xs" style={{ color: 'rgba(255,255,255,0.75)' }}>
                     Hosting at <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>RM300/mo</span>{' '}
-                    <strong style={{ color: '#FFD580' }}>RM150/mo</strong> — valid until 24 September 2025
+                    <strong style={{ color: '#FFD580' }}>RM150/mo</strong> — valid until 24 September 2026
                   </p>
                 </div>
               </div>
@@ -612,7 +612,7 @@ export default function Home() {
             <Link href="#pricing" className="hover:text-white transition-colors">Pricing</Link>
             <a href="https://wa.me/60182085097" target="_blank" rel="noopener" className="hover:text-white transition-colors">WhatsApp</a>
           </div>
-          <p className="text-xs" style={{ color: 'rgba(251,246,238,0.35)' }}>© 2025 HarNova · harnova.my</p>
+          <p className="text-xs" style={{ color: 'rgba(251,246,238,0.35)' }}>© 2026 HarNova · harnova.my</p>
         </div>
       </footer>
     </div>
