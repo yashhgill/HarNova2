@@ -41,7 +41,7 @@ const STEPS = [
 ]
 
 const PACKS = [
-  { tokens: 100, myr: 100, label: 'Starter', builds: 3 },
+  { tokens: 100, myr: 100, label: 'Starter', builds: 3, note: '' },
   { tokens: 200, myr: 200, label: 'Builder', builds: 6, popular: true },
   { tokens: 500, myr: 400, label: 'Pro',     builds: 16 },
 ]
@@ -56,7 +56,7 @@ const COSTS = [
   { action: 'Generate a website',    cost: 30 },
   { action: 'Regenerate / tweak',    cost: 5 },
   { action: 'Deploy (2-day trial)',  cost: 5 },
-  { action: 'Permanent hosting /mo', cost: 10 },
+  { action: 'Permanent hosting /mo', cost: 300, discount: 150 },
   { action: 'Custom domain /year',   cost: 50 },
   { action: 'GitHub push',           cost: 5 },
   { action: 'Download ZIP',          cost: 0 },
@@ -347,6 +347,29 @@ export default function Home() {
       {/* PRICING */}
       <section id="pricing" className="py-24 px-5">
         <div className="max-w-5xl mx-auto">
+
+          {/* DISCOUNT BANNER */}
+          <Reveal>
+            <div className="mb-10 rounded-2xl px-6 py-4 flex flex-wrap items-center justify-between gap-4"
+              style={{ background: 'linear-gradient(135deg, #B8472E 0%, #8B2E1A 100%)', color: 'white' }}>
+              <div className="flex items-center gap-3">
+                <span style={{ fontSize: '1.4rem' }}>🎉</span>
+                <div>
+                  <p className="font-semibold text-sm">Launch Discount — Limited Time</p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.75)' }}>
+                    Hosting at <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>RM300/mo</span>{' '}
+                    <strong style={{ color: '#FFD580' }}>RM150/mo</strong> — valid until 24 September 2025
+                  </p>
+                </div>
+              </div>
+              <a href="/auth/signup"
+                className="text-xs font-semibold px-4 py-2 rounded-full flex-shrink-0"
+                style={{ background: '#FFD580', color: '#211C18' }}>
+                Claim offer →
+              </a>
+            </div>
+          </Reveal>
+
           <div className="mb-10">
             <p className="text-sm font-semibold clay mb-3 tracking-wide">Pricing</p>
             <Reveal><h2 className="font-serif-display text-4xl font-medium charcoal mb-2">Pay only for what you use</h2></Reveal>
@@ -360,7 +383,16 @@ export default function Home() {
                 {COSTS.map((c, i) => (
                   <div key={i} className="flex items-center justify-between py-2 border-b last:border-0" style={{ borderColor: 'rgba(33,28,24,0.06)' }}>
                     <span className="text-sm" style={{ color: 'rgba(33,28,24,0.7)' }}>{c.action}</span>
-                    <span className="font-mono font-semibold text-sm clay">{c.cost === 0 ? 'Free' : c.cost}</span>
+                    <span className="font-mono font-semibold text-sm clay flex items-center gap-1.5">
+                      {c.cost === 0 ? 'Free' : (
+                        c.discount ? (
+                          <>
+                            <span style={{ textDecoration: 'line-through', opacity: 0.45, fontWeight: 400 }}>RM{c.cost}</span>
+                            <span style={{ color: '#B8472E' }}>RM{c.discount} 🎉</span>
+                          </>
+                        ) : `${c.cost} tokens`
+                      )}
+                    </span>
                   </div>
                 ))}
               </div>
